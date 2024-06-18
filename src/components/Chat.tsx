@@ -7,7 +7,7 @@ import { Message } from '../types';
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [lastDatetime, setLastDatetime] = useState<string | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
   const fetchMessages = async (datetime: string | null) => {
     try {
@@ -26,7 +26,7 @@ const Chat: React.FC = () => {
   useEffect(() => {
     fetchMessages(lastDatetime);
 
-    intervalRef.current = setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       fetchMessages(lastDatetime);
     }, 3000);
 
@@ -43,7 +43,7 @@ const Chat: React.FC = () => {
     }
     await axios.post('http://146.185.154.90:8000/messages', new URLSearchParams({ message, author }));
     fetchMessages(lastDatetime);
-    intervalRef.current = setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       fetchMessages(lastDatetime);
     }, 3000);
   };
